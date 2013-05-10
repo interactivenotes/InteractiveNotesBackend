@@ -1,0 +1,7 @@
+parameters:
+#    itools_inotes.example.class: Itools\InotesBundle\Example
+
+services:
+#    itools_inotes.example:
+#        class: %itools_inotes.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

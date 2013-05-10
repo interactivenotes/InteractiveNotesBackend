@@ -1,0 +1,23 @@
+itools_inotes_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: ItoolsInotesBundle:Default:index }
+
+itools_inotes_create_note:
+    pattern:  /user/{userId}/note
+    defaults: { _controller: ItoolsInotesBundle:Default:create }
+    methods: [POST]
+
+itools_inotes_read_note:
+    pattern:  /user/{userId}/note/{id}
+    defaults: { _controller: ItoolsInotesBundle:Default:read }
+    methods: [GET]
+
+itools_inotes_edit_note:
+    pattern:  /user/{userId}/note/{id}
+    defaults: { _controller: ItoolsInotesBundle:Default:edit }
+    methods: [PUT]
+
+itools_inotes_delete_note:
+    pattern:  /user/{userId}/note/{id}
+    defaults: { _controller: ItoolsInotesBundle:Default:delete }
+    methods: [DELETE]

@@ -1,0 +1,4 @@
+itools_inotes:
+    resource: "@ItoolsInotesBundle/Resources/config/routing.yml"
+    prefix:   /inotes
+
