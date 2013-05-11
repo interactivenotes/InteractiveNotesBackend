@@ -50,8 +50,8 @@ class Note {
     protected $thumbnail;
 
     /**
-     * @MongoDB\Hash
-     * @SSA\Type("array")
+     * @MongoDB\Collection(strategy="pushAll")
+     * @SSA\Type("array<string>")
      */
     protected $drawing;
 

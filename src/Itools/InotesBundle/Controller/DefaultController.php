@@ -2,6 +2,7 @@
 
 namespace Itools\InotesBundle\Controller;
 
+use Doctrine\Common\Collections\Collection;
 use Itools\InotesBundle\Document\Note;
 use Itools\InotesBundle\Document\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,10 +26,46 @@ class DefaultController extends Controller
         return new Response('Created note id '.$note->getId() ."<br/>\n");
     }
 
+
+
+
     public function listAction($userId){
 
-    //@TODO: implement here!!!
+        /**
+         * @var Collection<Note> $notes
+         */
+        $notes;
 
+        $format = 'json'; //$this->getRequest()->getRequestFormat();
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $notes = $dm->getRepository('ItoolsInotesBundle:Note')->findBy(array("userId"=>$userId));
+
+        if(!$notes){
+            throw $this->createNotFoundException("No Notes found for user ". $userId ."!");
+        }
+
+        $result = array();
+        $result['notes'] = array();
+        $result['noteIds'] = array();
+        $result['tags'] = array();
+        foreach($notes->toArray() as $key => $note){
+            $result['notes'][] = $note;
+            $result['noteIds'][] = $key;
+            $tags = $note->getTags();
+            if(is_array($tags)){
+                foreach($tags as $tag){
+                    if(!array_key_exists($tag,$result['tags'])){
+                        $result['tags'][$tag] = array();
+                    }
+                    $result['tags'][$tag][] = $key;
+                }
+            }
+        }
+
+        $serializer = $this->get("jms_serializer");
+        $payload = $serializer->serialize($result, $format);
+        return new Response($payload);
     }
 
     public function createAction($userId){
