@@ -46,3 +46,8 @@ DirectoryIndex app.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+<IfModule mod_headers.c>
+   Header set Access-Control-Allow-Headers X-Requested-With
+   Header set Access-Control-Allow-Origin *
+</IfModule>

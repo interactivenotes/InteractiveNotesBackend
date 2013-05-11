@@ -50,6 +50,7 @@ class DefaultController extends Controller
         $result['noteIds'] = array();
         $result['tags'] = array();
         foreach($notes->toArray() as $key => $note){
+            $note->setLocalId($note->getId());
             $result['notes'][] = $note;
             $result['noteIds'][] = $key;
             $tags = $note->getTags();
@@ -106,6 +107,7 @@ class DefaultController extends Controller
         if(!$note){
             throw $this->createNotFoundException("Note with Id " . $id . " not found for user ". $userId ."!");
         }
+        $note->setLocalId($note->getId());
 
 
         $serializer = $this->get("jms_serializer");
@@ -137,6 +139,7 @@ class DefaultController extends Controller
         $serializer = $this->get("jms_serializer");
         $newNote = $serializer->deserialize($payload,'Itools\InotesBundle\Document\Note',$format);
 
+        //var_dump($newNote->getDrawing());exit
         $oldNote->setText($newNote->getText());
         $oldNote->setModificationDate(new \DateTime());
         $oldNote->setTags($newNote->getTags());
@@ -169,7 +172,5 @@ class DefaultController extends Controller
 
         return new Response();
     }
-
-
 
 }

@@ -22,8 +22,26 @@ class Note {
     /**
      * @MongoDB\Id
      * @SSA\Type("string")
+     * @SSA\SerializedName("remoteId")
      */
     protected $id;
+
+    /**
+     * @SSA\Type("string")
+     * @SSA\SerializedName("id")
+     */
+    protected $localId;
+
+    public function setLocalId($localId)
+    {
+        $this->localId = $localId;
+    }
+
+    public function getLocalId()
+    {
+        return $this->localId;
+    }
+
 
     /**
      * @MongoDB\String
@@ -50,8 +68,8 @@ class Note {
     protected $thumbnail;
 
     /**
-     * @MongoDB\Collection(strategy="pushAll")
-     * @SSA\Type("array<string>")
+     * @MongoDB\Hash
+     * @SSA\Type("array<string,array>")
      */
     protected $drawing;
 
@@ -73,6 +91,11 @@ class Note {
      */
     protected $tags;
 
+    public function __construct()
+    {
+        $this->drawing = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
 
     /**
      * Get id
@@ -241,7 +264,7 @@ class Note {
     /**
      * Set tags
      *
-     * @param hash $tags
+     * @param collection $tags
      * @return self
      */
     public function setTags($tags)
@@ -253,7 +276,7 @@ class Note {
     /**
      * Get tags
      *
-     * @return hash $tags
+     * @return collection $tags
      */
     public function getTags()
     {
