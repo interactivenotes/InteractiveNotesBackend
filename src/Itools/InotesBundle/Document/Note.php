@@ -50,8 +50,8 @@ class Note {
     protected $thumbnail;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Drawing")
-     * @SSA\Type("Itools\InotesBundle\Document\Drawing")
+     * @MongoDB\Hash
+     * @SSA\Type("array")
      */
     protected $drawing;
 
@@ -68,8 +68,8 @@ class Note {
     protected $sticky;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="Tag")
-     * @SSA\Type("ArrayCollection<Itools\InotesBundle\Document\Tag>")
+     * @MongoDB\Collection(strategy="pushAll")
+     * @SSA\Type("array<string>")
      */
     protected $tags;
 
@@ -173,6 +173,28 @@ class Note {
     }
 
     /**
+     * Set drawing
+     *
+     * @param hash $drawing
+     * @return self
+     */
+    public function setDrawing($drawing)
+    {
+        $this->drawing = $drawing;
+        return $this;
+    }
+
+    /**
+     * Get drawing
+     *
+     * @return hash $drawing
+     */
+    public function getDrawing()
+    {
+        return $this->drawing;
+    }
+
+    /**
      * Set userId
      *
      * @param string $userId
@@ -215,57 +237,23 @@ class Note {
     {
         return $this->sticky;
     }
-    public function __construct()
-    {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
-     * Set drawing
+     * Set tags
      *
-     * @param Itools\InotesBundle\Document\Drawing $drawing
+     * @param hash $tags
      * @return self
      */
-    public function setDrawing(\Itools\InotesBundle\Document\Drawing $drawing)
+    public function setTags($tags)
     {
-        $this->drawing = $drawing;
+        $this->tags = $tags;
         return $this;
-    }
-
-    /**
-     * Get drawing
-     *
-     * @return Itools\InotesBundle\Document\Drawing $drawing
-     */
-    public function getDrawing()
-    {
-        return $this->drawing;
-    }
-
-    /**
-     * Add tags
-     *
-     * @param Itools\InotesBundle\Document\Tag $tags
-     */
-    public function addTag(\Itools\InotesBundle\Document\Tag $tags)
-    {
-        $this->tags[] = $tags;
-    }
-
-    /**
-    * Remove tags
-    *
-    * @param <variableType$tags
-    */
-    public function removeTag(\Itools\InotesBundle\Document\Tag $tags)
-    {
-        $this->tags->removeElement($tags);
     }
 
     /**
      * Get tags
      *
-     * @return Doctrine\Common\Collections\Collection $tags
+     * @return hash $tags
      */
     public function getTags()
     {

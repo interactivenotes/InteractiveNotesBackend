@@ -21,3 +21,9 @@ itools_inotes_delete_note:
     pattern:  /user/{userId}/note/{id}
     defaults: { _controller: ItoolsInotesBundle:Default:delete }
     methods: [DELETE]
+
+itools_inotes_list_notes:
+    pattern:  /user/{userId}/list
+    defaults: { _controller: ItoolsInotesBundle:Default:list }
+    methods: [GET]
+

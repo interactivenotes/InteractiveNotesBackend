@@ -3,6 +3,7 @@
 namespace Itools\InotesBundle\Controller;
 
 use Itools\InotesBundle\Document\Note;
+use Itools\InotesBundle\Document\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,14 +15,20 @@ class DefaultController extends Controller
         $note = new Note();
         $note->setText($name);
         $note->setUserId("noob");
+        $note->setTags(array("tag A", "tag B"));
 
         $dm = $this->get('doctrine_mongodb')->getManager();
-
         $dm->persist($note);
+
         $dm->flush();
 
         return new Response('Created note id '.$note->getId() ."<br/>\n");
-        //return $this->render('ItoolsInotesBundle:Default:index.html.twig', array('name' => $name));
+    }
+
+    public function listAction($userId){
+
+    //@TODO: implement here!!!
+
     }
 
     public function createAction($userId){
@@ -37,6 +44,8 @@ class DefaultController extends Controller
         $serializer = $this->get("jms_serializer");
         $note = $serializer->deserialize($payload,'Itools\InotesBundle\Document\Note',$format);
         $note->setUserId($userId);
+        $note->setCreationDate(new \DateTime());
+        $note->setModificationDate(new \DateTime());
 
         $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->persist($note);
@@ -45,7 +54,6 @@ class DefaultController extends Controller
         $payload = $serializer->serialize($note,$format);
         return new Response($payload);
     }
-
 
     public function readAction($userId, $id){
         /**
@@ -61,6 +69,7 @@ class DefaultController extends Controller
         if(!$note){
             throw $this->createNotFoundException("Note with Id " . $id . " not found for user ". $userId ."!");
         }
+
 
         $serializer = $this->get("jms_serializer");
         $payload = $serializer->serialize($note,$format);
@@ -92,7 +101,11 @@ class DefaultController extends Controller
         $newNote = $serializer->deserialize($payload,'Itools\InotesBundle\Document\Note',$format);
 
         $oldNote->setText($newNote->getText());
-        //$oldNote->setModificationDate();
+        $oldNote->setModificationDate(new \DateTime());
+        $oldNote->setTags($newNote->getTags());
+        $oldNote->setThumbnail($newNote->getThumbnail());
+        $oldNote->setDrawing($newNote->getDrawing());
+        $oldNote->setSticky($newNote->getSticky());
 
         $dm->persist($oldNote);
         $dm->flush();
@@ -119,4 +132,7 @@ class DefaultController extends Controller
 
         return new Response();
     }
+
+
+
 }
