@@ -48,6 +48,7 @@ DirectoryIndex app.php
 </IfModule>
 
 <IfModule mod_headers.c>
-   Header set Access-Control-Allow-Headers X-Requested-With
+   Header set Access-Control-Allow-Headers X-Requested-With, X-PINGOTHER
    Header set Access-Control-Allow-Origin *
+   Header set Access-Control-Allow-Method OPTIONS, GET, POST, PUT, DELETE
 </IfModule>
