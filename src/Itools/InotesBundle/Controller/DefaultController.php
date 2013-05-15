@@ -140,6 +140,7 @@ class DefaultController extends Controller
         $newNote = $serializer->deserialize($payload,'Itools\InotesBundle\Document\Note',$format);
 
         //var_dump($newNote->getDrawing());exit
+        $oldNote->setLocalId($newNote->getLocalId());
         $oldNote->setText($newNote->getText());
         $oldNote->setModificationDate(new \DateTime());
         $oldNote->setTags($newNote->getTags());
